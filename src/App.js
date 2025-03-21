@@ -16,7 +16,7 @@ function App() {
     setSequence(null);
     setSimulationResult(null);
 
-    const generatedSequence = generateSequence(testCase).replace(/\s/g, "");
+    const generatedSequence = generateSequence(testCase, memoryBlocks).replace(/\s/g, "");
     console.log("Raw Sequence: ", generatedSequence);
 
     let cleanSequence = generatedSequence
@@ -42,7 +42,7 @@ function App() {
 
     console.log("Simulation Result:", result);
     setSimulationResult(result);
-  };
+  };g
   return (
     <Container 
       maxWidth="md" 
