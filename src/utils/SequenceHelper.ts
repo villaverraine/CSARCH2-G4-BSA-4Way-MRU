@@ -17,6 +17,5 @@ export function generateSequence(testCase: string): string {
         ];
         sequence = [...sequence, ...sequence, ...sequence, ...sequence]; // Repeat 4 times
     }
-
     return sequence.join(", ");
 }
