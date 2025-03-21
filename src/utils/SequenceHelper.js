@@ -1,7 +1,7 @@
-import { CACHE_BLOCKS } from "./constants.ts";
-export function generateSequence(testCase: string, memoryBlocks: number): string {
+import { CACHE_BLOCKS } from "./constants.js";
+export function generateSequence(testCase, memoryBlocks) {
     const n = CACHE_BLOCKS;
-    let sequence: number[] = [];
+    let sequence = [];
 
     if (testCase === "sequential") {
         sequence = [...Array(2 * n).keys()]; // Generates [0, 1, 2, ..., 2n-1]

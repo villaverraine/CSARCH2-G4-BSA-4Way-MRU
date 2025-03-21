@@ -2,9 +2,9 @@ import './App.css';
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Container, Typography, TextField, Select, MenuItem, Button, FormControl, InputLabel } from "@mui/material";
-import { CACHE_BLOCKS, CACHE_LINE_SIZE, WAYS_PER_SET, READ_POLICY, NUM_SETS } from './utils/constants.ts';
-import { generateSequence } from './utils/SequenceHelper.ts';
-import { simulateCache } from './utils/SimulationHelper.ts';
+import { CACHE_BLOCKS, CACHE_LINE_SIZE, WAYS_PER_SET, READ_POLICY, NUM_SETS } from './utils/constants.js';
+import { generateSequence } from './utils/SequenceHelper.js';
+import { simulateCache } from './utils/SimulationHelper.js';
 
 function App() {
   const [memoryBlocks, setMemoryBlocks] = useState(1024);
@@ -42,7 +42,7 @@ function App() {
 
     console.log("Simulation Result:", result);
     setSimulationResult(result);
-  };g
+  };
   return (
     <Container 
       maxWidth="md" 

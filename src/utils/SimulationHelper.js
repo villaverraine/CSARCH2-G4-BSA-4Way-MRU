@@ -1,11 +1,6 @@
-import { CACHE_LINE_SIZE, WAYS_PER_SET, NUM_SETS } from "./constants.ts";
+import { CACHE_LINE_SIZE, WAYS_PER_SET, NUM_SETS } from "./constants.js";
 
-export function simulateCache(input: {
-    mainMemSize: string;
-    cacheCycle: string;
-    memoryCycle: string;
-    programSequence: string | number[];
-}) {
+export function simulateCache(input) {
     const mmSize = parseInt(input.mainMemSize);
     const cacheCycleTime = parseInt(input.cacheCycle);
     const memCycleTime = parseInt(input.memoryCycle);
@@ -30,7 +25,7 @@ export function simulateCache(input: {
     let cacheHits = 0;
     let cacheMisses = 0;
     let currentTime = 0;
-    let stepByStepLog: string[] = [];
+    let stepByStepLog = [];
 
     // **Process Each Memory Access**
     progFlow.forEach((block, index) => {
@@ -68,7 +63,7 @@ function generateMemorySnapshot(cacheMemory) {
     ).join("\n");
 }
 
-function calculateTotalAccessTime(cacheHits: number, cacheMisses: number, cacheCycleTime: number, memCycleTime: number) {
+function calculateTotalAccessTime(cacheHits, cacheMisses, cacheCycleTime, memCycleTime) {
     const penaltyMiss = (2 * cacheCycleTime) + (CACHE_LINE_SIZE * memCycleTime);
     const avgAccessTime = (cacheHits / (cacheHits + cacheMisses)) * cacheCycleTime +
                           (cacheMisses / (cacheHits + cacheMisses)) * penaltyMiss;
@@ -80,7 +75,7 @@ function calculateTotalAccessTime(cacheHits: number, cacheMisses: number, cacheC
 /**
  * **Stack-based MRU replacement**
  */
-function updateCacheMemory(cacheMemory, setIndex, block, timeStamp, stepByStepLog: string[]) {
+function updateCacheMemory(cacheMemory, setIndex, block, timeStamp, stepByStepLog) {
     let set = cacheMemory[setIndex];
     
     // **Check for Cache Hit**
