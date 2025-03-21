@@ -43,7 +43,6 @@ function App() {
     console.log("Simulation Result:", result);
     setSimulationResult(result);
   };
-
   return (
     <Container 
       maxWidth="md" 
