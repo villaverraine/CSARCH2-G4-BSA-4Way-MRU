@@ -27,16 +27,21 @@ export function simulateCache(input: {
         Array(WAYS_PER_SET).fill(null).map(() => ({ block: null, timestamp: 0 }))
     );
 
-
     let cacheHits = 0;
     let cacheMisses = 0;
     let currentTime = 0;
+    let stepByStepLog: string[] = [];
 
     // **Process Each Memory Access**
-    progFlow.forEach((block) => {
+    progFlow.forEach((block, index) => {
         const setIndex = block % NUM_SETS;
-        const hit = updateCacheMemory(cacheMemory, setIndex, block, ++currentTime);
-
+        const hit = updateCacheMemory(cacheMemory, setIndex, block, ++currentTime, stepByStepLog);
+        
+        stepByStepLog.push(`Step ${index + 1}: Accessing block ${block} in set ${setIndex} - ${hit ? 'HIT' : 'MISS'}`);
+        if (!hit) {
+            stepByStepLog.push(`Step ${index + 1}: Cache miss. Block ${block} loaded into set ${setIndex}.`);
+        }
+        
         hit ? cacheHits++ : cacheMisses++;
     });
 
@@ -53,6 +58,7 @@ export function simulateCache(input: {
         avgAccessTime: avgAccessTime.toFixed(2),
         totalAccessTime: totalAccessTime.toFixed(2),
         cacheSnapshot: generateMemorySnapshot(cacheMemory),
+        stepByStepLog: stepByStepLog.join("\n")
     };
 }
 
@@ -74,30 +80,29 @@ function calculateTotalAccessTime(cacheHits: number, cacheMisses: number, cacheC
 /**
  * **Stack-based MRU replacement**
  */
-function updateCacheMemory(cacheMemory, setIndex, block, timeStamp) {
+function updateCacheMemory(cacheMemory, setIndex, block, timeStamp, stepByStepLog: string[]) {
     let set = cacheMemory[setIndex];
-    console.log("SET VALUE: ", set);
-
+    
     // **Check for Cache Hit**
     let hitIndex = set.findIndex(entry => entry.block === block);
     if (hitIndex !== -1) {
-        // Update Timestamp
         set[hitIndex].timestamp = timeStamp;
+        stepByStepLog.push(`Block ${block} found in cache (Set ${setIndex}, Way ${hitIndex}).`);
         return true; // Cache HIT
     }
 
     // **Find an Empty Slot**
     let emptySlot = set.findIndex(entry => entry.block === null);
     if (emptySlot !== -1) {
-        // Insert into Empty Slot
         set[emptySlot] = { block, timestamp: timeStamp };
+        stepByStepLog.push(`Block ${block} placed in empty slot (Set ${setIndex}, Way ${emptySlot}).`);
         return false; // Cache MISS
     }
 
     let mruIndex = set.reduce((maxIdx, entry, idx) =>
         entry.timestamp > set[maxIdx].timestamp ? idx : maxIdx, 0);
 
-    console.log(`No empty slot. Replacing MRU block ${set[mruIndex].block} in Set ${setIndex}`);
+    stepByStepLog.push(`No empty slot. Replacing MRU block ${set[mruIndex].block} in Set ${setIndex}.`);
 
     // Replace MRU Block
     set[mruIndex] = { block, timestamp: timeStamp };
