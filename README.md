@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# CSARCH2 Cache Simulator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This website simulates a **4-Way Block Set Associative** cache structure that uses **Most Recently Used** replacement algorithm.
 
-## Available Scripts
+## Specifications 
+- **Cache line:** 16 words
+- **Number of cache blocks:** 32 blocks
+- **Cache line:** 16 words
+- **Read policy:** non load-through
+- Number of **memory blocks** is a user input that should be **at least 1024 blocks**
 
-In the project directory, you can run:
+## Test Cases 
+Three test simulations can be tested. 
 
-### `npm start`
+1. Sequential Sequence
+   - The memory accesses follow a sequential pattern, iterating through **2n** cache blocks before repeating the entire sequence **four times.**
+   - **n = 32**, meaning the pattern repeats 0-63 (64) four times.
+   - This test case simulates **linear memory accesses**, testing the efficiency of the algorithm in terms of cache utilization and hit rate growth.
+2.   Random Sequence
+     - Instead of a predictable pattern, memory accesses are **randomly chosen** from a pool of **4n** memory blocks.
+     - In this case it gets a randomized selection from 128 (4 * 32) blocks
+     - This evaluates how well the cache handles non-locality and more unpredictable data.
+3. Mid-repeat blocks
+   - The sequence starts at **block 0** and follows a pattern where it repeats the range **(0 to n-1)** twice, then continues sequentially from **n to 2n** and repeats **4 times.**
+   - Tests the effect of re-accessing certain blocks and loop heavy workloads on cache performance.
+  
+  ## Calculated Metrics
+  The program calculates the following performance metrics for each run. 
+  - Memory Access Count
+  - Cache Hit & miss
+  - Hit & Miss rate
+  - Average Memory Access Time
+  - Total Memory Access Time
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The program also provides the cache memory snapshot and a viewable step-by-step log of the entire process.
