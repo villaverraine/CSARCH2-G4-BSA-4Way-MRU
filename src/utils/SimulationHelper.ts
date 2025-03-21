@@ -22,22 +22,20 @@ export function simulateCache(input: {
         throw new Error("ERROR: Program flow entry cannot exceed main memory size.");
     }
 
-    // ✅ Initialize Cache Memory (Each set has a stack for MRU tracking)
+    // Initialize Cache Memory (Each set has a stack for MRU tracking)
     let cacheMemory = Array.from({ length: NUM_SETS }, () =>
         Array(WAYS_PER_SET).fill(null).map(() => ({ block: null, timestamp: 0 }))
     );
 
-    // ✅ MRU Stack Tracking for each set
-    let mruStack = Array.from({ length: NUM_SETS }, () => [] as number[]);
 
     let cacheHits = 0;
     let cacheMisses = 0;
     let currentTime = 0;
 
-    // 🔄 **Process Each Memory Access**
+    // **Process Each Memory Access**
     progFlow.forEach((block) => {
         const setIndex = block % NUM_SETS;
-        const hit = updateCacheMemory(cacheMemory, setIndex, block, ++currentTime, mruStack);
+        const hit = updateCacheMemory(cacheMemory, setIndex, block, ++currentTime);
 
         hit ? cacheHits++ : cacheMisses++;
     });
@@ -68,49 +66,41 @@ function calculateTotalAccessTime(cacheHits: number, cacheMisses: number, cacheC
     const penaltyMiss = (2 * cacheCycleTime) + (CACHE_LINE_SIZE * memCycleTime);
     const avgAccessTime = (cacheHits / (cacheHits + cacheMisses)) * cacheCycleTime +
                           (cacheMisses / (cacheHits + cacheMisses)) * penaltyMiss;
-    const totalAccessTime = cacheHits * cacheCycleTime + cacheMisses * penaltyMiss;
+    const totalAccessTime = (cacheHits * CACHE_LINE_SIZE * cacheCycleTime) + (cacheMisses * CACHE_LINE_SIZE * (cacheCycleTime + memCycleTime)) + cacheMisses * cacheCycleTime;
 
     return { avgAccessTime, totalAccessTime };
 }
 
 /**
- * ✅ **Stack-based MRU replacement**
+ * **Stack-based MRU replacement**
  */
-function updateCacheMemory(cacheMemory, setIndex, block, timeStamp, mruStack) {
+function updateCacheMemory(cacheMemory, setIndex, block, timeStamp) {
     let set = cacheMemory[setIndex];
+    console.log("SET VALUE: ", set);
 
-    // ✅ **Check for Cache Hit**
+    // **Check for Cache Hit**
     let hitIndex = set.findIndex(entry => entry.block === block);
     if (hitIndex !== -1) {
-        // ✅ Move Block to the Top of the Stack (MRU)
-        mruStack[setIndex] = mruStack[setIndex].filter(b => b !== block);
-        mruStack[setIndex].push(block);
-
-        // ✅ Update Timestamp
+        // Update Timestamp
         set[hitIndex].timestamp = timeStamp;
         return true; // Cache HIT
     }
 
-    // 🔍 **Find an Empty Slot**
+    // **Find an Empty Slot**
     let emptySlot = set.findIndex(entry => entry.block === null);
     if (emptySlot !== -1) {
-        // ✅ Insert into Empty Slot
+        // Insert into Empty Slot
         set[emptySlot] = { block, timestamp: timeStamp };
-        mruStack[setIndex].push(block);
         return false; // Cache MISS
     }
 
-    // 🔄 **If Full: Replace MRU Block (Top of Stack)**
-    let mruBlock = mruStack[setIndex].pop(); // **Remove the MRU block**
-    let mruIndex = set.findIndex(entry => entry.block === mruBlock);
+    let mruIndex = set.reduce((maxIdx, entry, idx) =>
+        entry.timestamp > set[maxIdx].timestamp ? idx : maxIdx, 0);
 
-    console.log(`❌ No empty slot. Replacing MRU block ${set[mruIndex].block} in Set ${setIndex}`);
+    console.log(`No empty slot. Replacing MRU block ${set[mruIndex].block} in Set ${setIndex}`);
 
-    // ✅ Replace MRU Block
+    // Replace MRU Block
     set[mruIndex] = { block, timestamp: timeStamp };
-
-    // ✅ Add New Block to the Top of the Stack
-    mruStack[setIndex].push(block);
 
     return false; // Cache MISS
 }

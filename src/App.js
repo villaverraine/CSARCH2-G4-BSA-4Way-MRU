@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Container, Typography, TextField, Select, MenuItem, Button, FormControl, InputLabel } from "@mui/material";
 import { CACHE_BLOCKS, CACHE_LINE_SIZE, WAYS_PER_SET, READ_POLICY, NUM_SETS } from './utils/constants.ts';
 
@@ -30,14 +30,13 @@ function App() {
         return;
     }
 
-    const sequenceForSimulation = cleanSequence.join(",");
-    setSequence(sequenceForSimulation); 
+    setSequence(cleanSequence); 
 
     const result = simulateCache({
         mainMemSize: memoryBlocks.toString(),
         cacheCycle: "1",
         memoryCycle: "10",
-        programSequence: sequenceForSimulation, 
+        programSequence: cleanSequence, 
     });
 
     console.log("Simulation Result:", result);
