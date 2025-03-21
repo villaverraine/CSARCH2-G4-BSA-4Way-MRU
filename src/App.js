@@ -16,37 +16,48 @@ function App() {
     setSequence(null);
     setSimulationResult(null);
 
-    const generatedSequence = generateSequence(testCase).replace(/\s/g, "");
-    console.log("Raw Sequence: ", generatedSequence);
+    if (testCase === "manual-small") {
+      const testSequence = [0, 2, 4, 6, 0, 8, 2, 10, 0];
 
-    let cleanSequence = generatedSequence
+      const result = simulateCache({
+        mainMemSize: memoryBlocks.toString(),
+        cacheCycle: "1",
+        memoryCycle: "10",
+        programSequence: testSequence,
+      });
+  
+      console.log("Simulation Result:", result);
+      setSimulationResult(result);
+
+    } else {
+      const generatedSequence = generateSequence(testCase, memoryBlocks).replace(/\s/g, "");
+      console.log("Raw Sequence: ", generatedSequence);
+
+      let cleanSequence = generatedSequence
         .split(",")
         .map(num => parseInt(num, 10))
         .filter(num => !isNaN(num));
 
-    console.log("Cleaned Sequence: ", cleanSequence);
+      console.log("Cleaned Sequence: ", cleanSequence);
 
-    if (cleanSequence.length === 0) {
+      if (cleanSequence.length === 0) {
         alert("⚠️ Error: Generated sequence is empty or invalid.");
         return;
+      }
+
+      setSequence(cleanSequence);
+      // const result = simulateCache({
+      //     mainMemSize: memoryBlocks.toString(),
+      //     cacheCycle: "1",
+      //     memoryCycle: "10",
+      //     programSequence: cleanSequence,
+      // });
     }
-
-    setSequence(cleanSequence);
-
-    const result = simulateCache({
-        mainMemSize: memoryBlocks.toString(),
-        cacheCycle: "1",
-        memoryCycle: "10",
-        programSequence: cleanSequence,
-    });
-
-    console.log("Simulation Result:", result);
-    setSimulationResult(result);
   };
 
   return (
-    <Container 
-      maxWidth="md" 
+    <Container
+      maxWidth="md"
       sx={{
         textAlign: "center",
         mt: 5,
@@ -60,13 +71,13 @@ function App() {
       <Typography variant='h4' gutterBottom sx={{ fontWeight: "bold", color: "#FFD700" }}>
         Cache Simulation (4-Way BSA + MRU)
       </Typography>
-      
+
       <Typography variant='h6'>Cache Blocks: {CACHE_BLOCKS}</Typography>
       <Typography variant='h6'>Cache line Size: {CACHE_LINE_SIZE}</Typography>
       <Typography variant='h6'>Ways Per Set: {WAYS_PER_SET}</Typography>
       <Typography variant='h6'>Number of Sets: {NUM_SETS}</Typography>
       <Typography variant='h6'>Read Policy: {READ_POLICY}</Typography>
-      
+
       <TextField
         label="Number of Memory Blocks? (Min 1024)"
         type="number"
@@ -77,13 +88,13 @@ function App() {
         sx={{
           backgroundColor: "white",
           borderRadius: 1,
-          '& .MuiInputLabel-root': { 
+          '& .MuiInputLabel-root': {
             fontSize: "1.8rem",
             fontWeight: "bold",
             color: "#FFD700",
-            textShadow: "2px 2px 2px black", 
+            textShadow: "2px 2px 2px black",
           },
-          '& .MuiInputBase-input': { 
+          '& .MuiInputBase-input': {
             fontSize: "1.5rem",
             padding: "12px",
           },
@@ -91,7 +102,7 @@ function App() {
       />
 
       <FormControl fullWidth margin="normal" sx={{ backgroundColor: "white", borderRadius: 1 }}>
-        <InputLabel 
+        <InputLabel
           sx={{
             fontSize: "1.8rem",
             fontWeight: "bold",
@@ -105,13 +116,14 @@ function App() {
           <MenuItem value="sequential">Sequential</MenuItem>
           <MenuItem value="random">Random</MenuItem>
           <MenuItem value="mid-repeat">Mid-Repeat</MenuItem>
+          <MenuItem value="manual-small">Manual (Small Test Case)</MenuItem>
         </Select>
       </FormControl>
 
       <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-        <Button 
-          variant="contained" 
-          color="warning" 
+        <Button
+          variant="contained"
+          color="warning"
           sx={{ mt: 2, fontWeight: "bold" }}
           onClick={handleGenerate}
         >
