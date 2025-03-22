@@ -66,8 +66,7 @@ The main comparable metric here is the **lower hit rate than the miss rate.**
 - The low hit rate suggests that the **MRU algorithm** may be **evicting useful blocks too soon**, possibly replacing blocks that will be needed again in the next iteration.
 - If blocks are frequently replaced by newer blocks before they can be reused causing a lower hit rate, we can infer that MRU performs worse than Least Recently Used (LRU) in this case.
 
-**2. Random Sequence
-**
+**2. Random Sequence**
 
 ![image](https://github.com/user-attachments/assets/d0c56a0a-e1aa-491a-99d4-66435f73cf80)
 
