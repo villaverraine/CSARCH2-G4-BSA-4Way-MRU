@@ -81,7 +81,10 @@ Although the image here used is just one instance of the randomized test case, o
 
 ![image](https://github.com/user-attachments/assets/35aeaa92-2ce3-4a7e-963e-be8ed408f85b)
 
-lorem ipsum lorem
+- Repeats certain blocks mid-sequence, leading to moderate temporal locality.
+- Performs better than random and sequential patterns.
+- MRU likely evicts reused blocks too early, reducing efficiency.
+- Still less effective than looping or burst access patterns.
 
 ## Conclusion
 In conclusion, our tests on a 4-way set-associative cache with MRU replacement reveal that its performance varies based on access patterns. Sequential access ( the 64-block sequence) results in frequent evictions, leading to moderate hit rates. Random access leads to high miss rates, as aside from the conviction, there is no clear pattern to exploit unlike the other two cases. Mid-repeat access (28-block sequence with repetition) benefits from partial reuse, improving hit counts.  Overall, memory access time is directly impacted by the number of misses; more misses lead to slower performance since fetching from main memory is costly. MRU is effective when recent accesses are unlikely to be reused but can struggle with patterns that require retaining older data for efficiency.
