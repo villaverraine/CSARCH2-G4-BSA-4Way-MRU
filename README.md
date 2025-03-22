@@ -41,6 +41,16 @@ Three test simulations can be tested.
 
 The program also provides the cache memory snapshot and a viewable step-by-step log of the entire process.
 
+## Running the Code 
+In the project directory, you can run this command in the terminal:
+ 
+ ### `npm start`
+
+ ## Website Link
+ Alternatively, you can access the website through this link: 
+ 
+ https://csarch-2-g4-bsa-4-way-mru.vercel.app/
+
 ## Demonstration Video Link 
 [insert link]
 
