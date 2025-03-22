@@ -2,7 +2,7 @@
 
 This website simulates a **4-Way Block Set Associative** cache structure that uses **Most Recently Used** replacement algorithm.
 
-by Group 4:
+Group 4:
 - Abendan, Ashley
 - Aquino, Mark
 - Maunahan, Alliyah
