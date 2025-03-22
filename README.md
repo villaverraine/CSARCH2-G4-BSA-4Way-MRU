@@ -55,7 +55,7 @@ In the project directory, you can run this command in the terminal:
 [insert link]
 
 ## Performance Analysis 
-1. Sequential Sequence
+**1. Sequential Sequence**
 
 
 ![image](https://github.com/user-attachments/assets/74b61f93-3055-4d21-97bf-c4e7b758a770)
@@ -66,8 +66,8 @@ The main comparable metric here is the **lower hit rate than the miss rate.**
 - The low hit rate suggests that the **MRU algorithm** may be **evicting useful blocks too soon**, possibly replacing blocks that will be needed again in the next iteration.
 - If blocks are frequently replaced by newer blocks before they can be reused causing a lower hit rate, we can infer that MRU performs worse than Least Recently Used (LRU) in this case.
 
-2. Random Sequence
-
+**2. Random Sequence
+**
 
 ![image](https://github.com/user-attachments/assets/d0c56a0a-e1aa-491a-99d4-66435f73cf80)
 
@@ -76,7 +76,7 @@ Although the image here used is just one instance of the randomized test case, o
 - MRU assumes recent accesses are less useful—but with random access, **there’s no clear pattern to exploit.**
 
 
-3. Mid-Repeat Blocks
+**3. Mid-Repeat Blocks**
 
 
 ![image](https://github.com/user-attachments/assets/35aeaa92-2ce3-4a7e-963e-be8ed408f85b)
