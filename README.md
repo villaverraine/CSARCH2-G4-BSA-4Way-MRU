@@ -52,7 +52,7 @@ In the project directory, you can run this command in the terminal:
  https://csarch-2-g4-bsa-4-way-mru.vercel.app/
 
 ## Demonstration Video Link 
-[insert link]
+https://drive.google.com/file/d/1WSb6Y6koYuysR8V6XTROAaDHE5igpzaN/view?usp=sharing
 
 ## Performance Analysis 
 **1. Sequential Sequence**
@@ -83,7 +83,7 @@ Although the image here used is just one instance of the randomized test case, o
 
 - Repeats certain blocks mid-sequence, leading to moderate temporal locality.
 - Performs better than random and sequential patterns.
-- MRU likely evicts reused blocks too early, reducing efficiency.
+- Like the previous observations, MRU likely evicts reused blocks too early, reducing efficiency.
 - Still less effective than looping or burst access patterns.
 
 ## Conclusion
